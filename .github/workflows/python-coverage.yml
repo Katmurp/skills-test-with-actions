@@ -5,12 +5,10 @@ on:
     branches:
       - main
 
-permissions:
-  pull-requests: write
-  
 jobs:
   python-coverage:
     runs-on: ubuntu-latest
+    name: Coverage Check
 
     steps:
       - name: Checkout code
@@ -28,7 +26,8 @@ jobs:
           pip install coverage==7.9
           pip install pytest-cov==6.2.1
 
-      - name: Run tests and generate coverage report
-        run: |
-          pytest --cov=src --cov-report=term-missing
-          coverage report --fail-under=90
+      - name: Run tests with coverage
+        run: python -m pytest --cov=src --cov-report=term-missing -v
+
+      - name: Check coverage threshold
+        run: python -m coverage report --fail-under=90
